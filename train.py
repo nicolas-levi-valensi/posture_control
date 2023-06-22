@@ -47,26 +47,26 @@ def main():
     data_path = "Assets/datasets_records"
     train_model = not args.no_train
     model_path = "Assets/model_data/"
-    ds_files_path = [class_file for class_file in os.listdir(data_path)]
+    files_names = [class_file for class_file in os.listdir(data_path)]
 
     if train_model:
-        x, y = load_data_from_file(data_path + "/" + ds_files_path[0], class_id=0)
-        for i in range(1, len(ds_files_path)):
-            xc, yc = load_data_from_file(data_path + "/" + ds_files_path[i], class_id=i)
+        x, y = load_data_from_file(data_path + "/" + files_names[0], class_id=0)
+        for i in range(1, len(files_names)):
+            xc, yc = load_data_from_file(data_path + "/" + files_names[i], class_id=i)
             x = np.concatenate((x, xc))
             y = np.concatenate((y, yc))
 
-        mdl = create_model(len(ds_files_path))
-        mdl.summary()
+        model = create_model(len(files_names))
+        model.summary()
 
-        mdl.fit(x=x, y=y,
-                epochs=20)
-        mdl.save(model_path)
+        model.fit(x=x, y=y,
+                  epochs=20)
+        model.save(model_path)
     else:
-        mdl = models.load_model(model_path)
+        model = models.load_model(model_path)
 
-    mov_list = [x[:-4] for x in ds_files_path]
-    print(f"INFO: Loaded classes : {mov_list}")
+    posture_list = [x[:-4] for x in files_names]
+    print(f"INFO: Loaded classes : {posture_list}")
 
     # Capture object initialisation
     cap = cv2.VideoCapture(0)
@@ -105,11 +105,8 @@ def main():
                         coords_list[nb, :] = [lm.x, lm.y, lm.z]
 
                 if coords_list.flatten().shape == (63,):
-                    pred = mdl.predict(coords_list.reshape(1, 63), verbose=False)
-                    # cv2.putText(img_rgb, mov_list[np.argmax(pred)],
-                    #             (w // 3, h // 5),
-                    #             cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
-                    for c in range(len(mov_list)):
+                    pred = model.predict(coords_list.reshape(1, 63), verbose=False)
+                    for c in range(len(posture_list)):
                         cv2.rectangle(img=img_rgb,
                                       pt1=(0, 50 + 50 * c),
                                       pt2=(int(200 * pred[0, c]), 50 * c),
@@ -120,7 +117,7 @@ def main():
                                       pt2=(int(200), 50 * c),
                                       color=(100, 100, 100),
                                       thickness=1)
-                        cv2.putText(img_rgb, mov_list[c],
+                        cv2.putText(img_rgb, posture_list[c],
                                     (10, 25 + 50 * c),
                                     cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (55, 0, 200), 1)
             else:
