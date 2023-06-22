@@ -14,7 +14,7 @@ train those classes and use them as control with pynput in respectively 3 python
 *Up, down, left, right* hand posture with index finger for directional arrows.
 *Thumb and index touching* to press enter
 
-Existing classes are present in [Assets/datasets_records](Assets/datasets_records).
+Existing posture classes are present in [Assets/datasets_records](Assets/datasets_records).
 
 The *.csv files are not necessary for the controller as the model is pretrained 
 but the labels corresponding to the model output have to be corresponding.
