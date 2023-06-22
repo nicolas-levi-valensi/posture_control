@@ -1,7 +1,7 @@
 import time
 import signal
 from pynput.keyboard import Controller, Key
-from hvc_minilib import HandVideoClassifier
+from nico_lib.hvc_minilib import HandVideoClassifier
 
 # SETTINGS
 MODEL_PATH = "Assets/model_data"  # TensorFlow Keras model path root
