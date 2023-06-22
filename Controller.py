@@ -5,26 +5,26 @@ from nico_lib.hvc_minilib import HandVideoClassifier
 
 # SETTINGS
 MODEL_PATH = "Assets/model_data"  # TensorFlow Keras model path root
-MODEL_OUTPUT_LABELS = ["bas", "droite", "gauche", "haut", "dummy", "dummy", "ok", "dummy", "dummy"]
+MODEL_OUTPUT_LABELS = ["dummy", "down", "left", "dummy", "Enter", "dummy", "right", "dummy", "up"]
 KEY_PRESS_DELAY = 0.2  # Delay between each press on [up, down, left, right] key
 USE_VERBOSE_ON_HVC = True  # Enables INFO output from HandVideoClassifier
 
 
 def directional_arrow_control(state, controller):
     if state != -1:
-        if state == 0:  # down
+        if state == 1:  # down
             controller.press(Key.down)
             controller.release(Key.down)
-        elif state == 1:  # right
+        elif state == 6:  # right
             controller.press(Key.right)
             controller.release(Key.right)
         elif state == 2:  # left
             controller.press(Key.left)
             controller.release(Key.left)
-        elif state == 3:  # up
+        elif state == 8:  # up
             controller.press(Key.up)
             controller.release(Key.up)
-        elif state == 6:  # ok
+        elif state == 4:  # Enter
             controller.press(Key.enter)
             controller.release(Key.enter)
             time.sleep(1)  # delay to avoid multiple presses on key
