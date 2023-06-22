@@ -92,7 +92,7 @@ hvc = HandVideoClassifier("Assets/model_data").start()
 hvc.stop()
 ```
 
-#### attributes
+#### Attributes
 
 ```python
 from nico_lib.hvc_minilib import HandVideoClassifier
