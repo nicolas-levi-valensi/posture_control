@@ -6,22 +6,25 @@ import numpy as np
 import csv
 import mediapipe as mp
 
+DATASET_PATH = "Assets/datasets_records"  # "path/to/folder" format
 class_path = ""
-show_lm = True
+SHOW_LM = True
 
 
-def change_inv_file():
-    def edit():
+def ask_class_name(dataset_path):
+    def edit_path(path):
         global class_path
         if entry.get() != "":
-            if os.path.isfile(f"./datasets_records/{entry.get()}.csv"):
+            if os.path.isfile(f"path/{entry.get()}.csv"):
                 valid_path = askokcancel(title="Overwrite ?",
                                          message=f"This will overwrite the data of the class : {entry.get()}.")
                 if not valid_path:
                     return
             showinfo(title="Startup", message="The acquisition will begin in a few seconds")
-            class_path = f"./datasets_records/{entry.get()}.csv"
+            class_path = f"{path}/{entry.get()}.csv"
             app.destroy()
+        else:
+            showinfo(title="No name", message="Please provide a name for the class")
 
     def on_close():
         exit(0)
@@ -38,7 +41,7 @@ def change_inv_file():
     entry.place(relx=0.5, rely=0.2, anchor="center")
     button = tk.Button(master=frame,
                        text="OK",
-                       command=edit)
+                       command=lambda: edit_path(dataset_path))
     button.place(relx=0.5, rely=0.7, anchor="center")
     frame.place(relx=0.5, rely=0.9, anchor="s")
 
@@ -51,7 +54,7 @@ def change_inv_file():
 
 
 def main():
-    change_inv_file()
+    ask_class_name(DATASET_PATH)
 
     # Hands detection objects
     mp_hands = mp.solutions.hands
@@ -95,7 +98,7 @@ def main():
 
                     if cv2.waitKey(1) & 0xFF == ord("a"):
                         file_writer.writerow(coords_list.flatten())
-                        print(count)
+                        print("Saved arrays : {count}")
                         count += 1
 
                 else:
@@ -115,7 +118,7 @@ def main():
     cap.release()
     cv2.destroyAllWindows()
 
-    if show_lm:
+    if SHOW_LM:
         with open(class_path, 'r') as f:
             if os.path.getsize(class_path) > 0:
                 lm_from_csv = np.loadtxt(f.readlines(), delimiter=',').reshape((-1, 21, 3))
@@ -128,7 +131,7 @@ def main():
                            radius=3,
                            color=(100, int(lm[2] * 5 * 255) % 255, 100),
                            thickness=2)
-            cv2.imshow(f"Landmarks in {class_path}", im)
+            cv2.imshow(f"Landmarks in {DATASET_PATH}", im)
             cv2.waitKey(1)
 
 
