@@ -1,4 +1,4 @@
-# Drone Control
+# Keyboard Control
 
 This package contains all requirements to add new classes, train those classes and use them as control with pynput is respectively 3 python scripts
 
