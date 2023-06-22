@@ -24,7 +24,6 @@ def directional_arrow_control(state, controller):
         elif state == 3:  # up
             controller.press(Key.up)
             controller.release(Key.up)
-            time.sleep(0.5)
         elif state == 6:  # ok
             controller.press(Key.enter)
             controller.release(Key.enter)
