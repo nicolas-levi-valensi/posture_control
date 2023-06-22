@@ -9,7 +9,8 @@ class HandVideoClassifier:
     def __init__(self,
                  model_path: str,
                  stream_path: int | str = 0,
-                 video_output: bool = False, verbose: bool = False,
+                 video_output: bool = False,
+                 verbose: bool = False,
                  labels_on_vid: list | np.ndarray = None) -> None:
         """
         Description
@@ -73,10 +74,10 @@ class HandVideoClassifier:
         else:
             raise ValueError("The labels list must be of length {0}".format((model.layers[-1]).output_shape[1]))
 
-        # Allowing main process to continue and finishing startup
+        # Allowing main process to continue and finishing startup.
         self._set_running()
 
-        # Main loop, stops when EOF, escape or user code asking detection shutdown
+        # Main loop, stops when EOF, escape or user code asking detection shutdown.
         while self.__running and self.__stream.isOpened():
             grabbed, src = self.__stream.read()
             if not grabbed:
@@ -108,7 +109,7 @@ class HandVideoClassifier:
                     if cv2.waitKey(1) & 0xFF == 27:
                         self.stop()
 
-    def get_prediction(self):
+    def get_prediction(self) -> int:
         """
         Returns the argmax of the classifier output.
 
@@ -116,13 +117,13 @@ class HandVideoClassifier:
         """
         return self.__prediction.value
 
-    def is_running(self):
+    def is_running(self) -> int:
         """
         Returns the running state of the detection process.
 
         :return: Running state
         """
-        return self.__running.value
+        return self.__running.value == 1  # necessary due to subprocess integer shared values limitations.
 
     def stop(self):
         """
