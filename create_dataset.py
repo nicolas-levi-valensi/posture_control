@@ -98,7 +98,7 @@ def main():
 
                     if cv2.waitKey(1) & 0xFF == ord("a"):
                         file_writer.writerow(coords_list.flatten())
-                        print("Saved arrays : {count}")
+                        print(f"Saved arrays : {count}")
                         count += 1
 
                 else:
