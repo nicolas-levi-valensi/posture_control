@@ -20,8 +20,6 @@ def create_model(n_classes):
         layers.Dense(n_classes, activation="softmax")
     ])
 
-
-
     model.compile(optimizer='adam',
                   loss=tf.losses.SparseCategoricalCrossentropy(from_logits=True),
                   metrics=[tf.metrics.SparseCategoricalAccuracy()])
@@ -41,17 +39,16 @@ def load_data_from_file(path: str, class_id: int):
 
 def main():
     parser = argparse.ArgumentParser(description="Train and visualize")
-    parser.add_argument('--train',
+    parser.add_argument('--no_train',
                         help="Disable model training and use pre-existing model",
                         action="store_true")
     args = parser.parse_args()
 
     data_path = "Assets/datasets_records"
-    train_model = args.train
+    train_model = not args.no_train
     model_path = "Assets/model_data/"
 
     ds_files_path = [class_file for class_file in os.listdir(data_path)]
-    print(ds_files_path)
 
     if train_model:
         x, y = load_data_from_file(data_path + "/" + ds_files_path[0], class_id=0)
@@ -59,8 +56,6 @@ def main():
             xc, yc = load_data_from_file(data_path + "/" + ds_files_path[i], class_id=i)
             x = np.concatenate((x, xc))
             y = np.concatenate((y, yc))
-            print(i, ds_files_path[i])
-            print(np.max(y))
 
         mdl = create_model(len(ds_files_path))
         mdl.summary()
@@ -72,7 +67,7 @@ def main():
         mdl = models.load_model(model_path)
 
     mov_list = [x[:-4] for x in ds_files_path]
-    print(mov_list)
+    print(f"INFO: Loaded classes : {mov_list}")
 
     # Capture object initialisation
     cap = cv2.VideoCapture(0)
@@ -112,7 +107,6 @@ def main():
 
                 if coords_list.flatten().shape == (63,):
                     pred = mdl.predict(coords_list.reshape(1, 63), verbose=False)
-                    print(pred)
                     # cv2.putText(img_rgb, mov_list[np.argmax(pred)],
                     #             (w // 3, h // 5),
                     #             cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
