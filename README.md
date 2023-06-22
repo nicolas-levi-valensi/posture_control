@@ -20,6 +20,8 @@ Existing classes are present in [Assets/datasets_records](Assets/datasets_record
 but the labels corresponding to the model output have to be corresponding.
 The model output is trained with the *.csv files sorted alphabetically.
 
+Echap while focused on OpenCV video output window to end the process by default (key code 27).
+
 ### Used Packages
 
 * **Mediapipe** - hand landmarks acquisition.
