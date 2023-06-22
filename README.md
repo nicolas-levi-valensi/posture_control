@@ -16,7 +16,7 @@ train those classes and use them as control with pynput in respectively 3 python
 
 Existing classes are present in [Assets/datasets_records](Assets/datasets_records).
 
-*.csv files are not necessary for the controller as the model is pretrained 
+The *.csv files are not necessary for the controller as the model is pretrained 
 but the labels corresponding to the model output have to be corresponding.
 The model output is trained with the *.csv files sorted alphabetically.
 
