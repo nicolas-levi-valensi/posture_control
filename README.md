@@ -20,7 +20,7 @@ The *.csv files are not necessary for the controller as the model is pretrained
 but the labels corresponding to the model output have to be corresponding.
 The model output is trained with the *.csv files sorted alphabetically.
 
-Echap while focused on OpenCV video output window to end the process by default (key code 27).
+Escape key while focused on OpenCV video output window to end the process by default (key code 27).
 
 ### Used Packages
 
