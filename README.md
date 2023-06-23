@@ -10,9 +10,6 @@ train those classes and use them as control with pynput in respectively 3 python
    2. `python3 train.py --no_train` argument to avoid training and use visualizer only.
 3. **Controller.py** : Example controller using the pre-trained model and Mediapipe detection.
 
-[![Demonstration video](https://i3.ytimg.com/vi/3sla-qnNxwM/maxresdefault.jpg)]
-(https://www.youtube.com/watch?v=3sla-qnNxwM)
-
 [![Demonstration video](https://i3.ytimg.com/vi/3sla-qnNxwM/maxresdefault.jpg)](https://www.youtube.com/watch?v=3sla-qnNxwM)
 
 ### Default configuration of the controller
