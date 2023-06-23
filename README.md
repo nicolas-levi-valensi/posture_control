@@ -53,9 +53,10 @@ from nico_lib.hvc_minilib import HandVideoClassifier
 
 hvc = HandVideoClassifier(model_path="Assets/model_data",
                           stream_path=0,  # To use camera at port 0 (default)
-                          video_output=True,
+                          video_output=True,  # or a list/1D-array of labels
+                          verbose=True,  # outputs subprocess behavior to console
                           labels_on_vid=None,  # Or a list/1D-array of labels
-                          verbose=True)
+                          always_on_top=True)  # keeps video output in front of other apps
 ```
 
 #### Process startup
