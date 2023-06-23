@@ -15,40 +15,42 @@ def ask_class_name(dataset_path):
     def edit_path(path):
         global class_path
         if entry.get() != "":
-            if os.path.isfile(f"path/{entry.get()}.csv"):
+            if os.path.isfile(f"{DATASET_PATH}/{entry.get()}.csv"):
                 valid_path = askokcancel(title="Overwrite ?",
                                          message=f"This will overwrite the data of the class : {entry.get()}.")
                 if not valid_path:
                     return
-            showinfo(title="Startup", message="The acquisition will begin in a few seconds")
+            showinfo(title="Startup", message="The acquisition will begin in a few seconds.\n"
+                                              "Hold spacebar while in frame to acquire data.")
             class_path = f"{path}/{entry.get()}.csv"
             app.destroy()
         else:
-            showinfo(title="No name", message="Please provide a name for the class")
+            showinfo(title="No name", message="Please provide a name for the class.")
 
     def on_close():
         exit(0)
 
     app = tk.Tk("Class name")
 
-    label = tk.Label(master=app, text="Class name to register :", font='Helvetica 16 bold')
+    label = tk.Label(master=app, text="Class name to register :",
+                     font='Helvetica 16 bold', foreground="#ffffff", background="#2f73a5")
     label.place(relx=0.5, rely=0.2, anchor="n")
 
-    frame = tk.Frame(master=app, background="#4f23a5",
+    frame = tk.Frame(master=app, background="#2f73a5",
                      width=300, height=100)
     entry = tk.Entry(master=frame,
                      width=30, font="Helvetica 16 bold", justify="center")
     entry.place(relx=0.5, rely=0.2, anchor="center")
     button = tk.Button(master=frame,
-                       text="OK",
+                       text="Begin", width=15,
                        command=lambda: edit_path(dataset_path))
     button.place(relx=0.5, rely=0.7, anchor="center")
     frame.place(relx=0.5, rely=0.9, anchor="s")
 
     app.protocol("WM_DELETE_WINDOW", on_close)
     app.title(string="Class name chooser")
-    app.geometry("400x300")
-    app.config(bg='#4f23a5')
+    app.geometry("400x200")
+    app.config(bg='#2f73a5')
 
     app.mainloop()
 
@@ -96,7 +98,7 @@ def main():
                             cx, cy = int(lm.x * w), int(lm.y * h)
                             cv2.putText(img_rgb, str(nb), (cx + 5, cy + 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
 
-                    if cv2.waitKey(1) & 0xFF == ord("a"):
+                    if cv2.waitKey(1) & 0xFF == 32:  # Windows space bar
                         file_writer.writerow(coords_list.flatten())
                         print(f"Saved arrays : {count}")
                         count += 1
