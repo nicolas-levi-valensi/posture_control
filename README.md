@@ -13,7 +13,7 @@ train those classes and use them as control with pynput in respectively 3 python
 [![Demonstration video](https://i3.ytimg.com/vi/3sla-qnNxwM/maxresdefault.jpg)]
 (https://www.youtube.com/watch?v=3sla-qnNxwM)
 
-[![Final video of fixing issues in your code in VS Code](https://img.youtube.com/vi/JLMbpiywVxQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=JLMbpiywVxQ)
+[![Demonstration video](https://i3.ytimg.com/vi/3sla-qnNxwM/maxresdefault.jpg)](https://www.youtube.com/watch?v=3sla-qnNxwM)
 
 ### Default configuration of the controller
 *Up, down, left, right* hand posture with index finger for directional arrows.
