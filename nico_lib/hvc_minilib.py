@@ -11,7 +11,8 @@ class HandVideoClassifier:
                  stream_path: int | str = 0,
                  video_output: bool = False,
                  verbose: bool = False,
-                 labels_on_vid: list | np.ndarray = None) -> None:
+                 labels_on_vid: list | np.ndarray = None,
+                 always_on_top: bool = True) -> None:
         """
         Description
 
@@ -24,7 +25,8 @@ class HandVideoClassifier:
         :param stream_path: integer for camera usage (0 for main camera), string for video file,
         :param video_output: enables OpenCV video output,
         :param verbose: enables verbose mode,
-        :param labels_on_vid: list or array of labels to show on video output.
+        :param labels_on_vid: list or array of labels to show on video output,
+        :param always_on_top: keeps video output in front of other apps.
         """
         self.__process = None
         self.__stream = None
@@ -35,6 +37,7 @@ class HandVideoClassifier:
         self.__stream_path = stream_path
         self.model_path = model_path
         self.labels = labels_on_vid
+        self.always_on_top = always_on_top
 
     def start(self) -> "HandVideoClassifier":
         """
@@ -106,6 +109,8 @@ class HandVideoClassifier:
                                         org=(20, 20), fontFace=cv2.FONT_HERSHEY_COMPLEX_SMALL,
                                         fontScale=1, color=(255, 255, 255), thickness=1)
                     cv2.imshow("Video Output", src)
+                    if self.always_on_top:
+                        cv2.setWindowProperty("Video Output", cv2.WND_PROP_TOPMOST, 1)
                     if cv2.waitKey(1) & 0xFF == 27:
                         self.stop()
 
