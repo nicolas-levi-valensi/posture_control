@@ -21,7 +21,7 @@ train those classes and use them as control with pynput in respectively 3 python
 Existing posture classes are present in [Assets/datasets_records](Assets/datasets_records).
 
 The *.csv files are not necessary for the controller as the model is pretrained 
-but the labels corresponding to the model output have to be corresponding.
+but the labels have to correspond to the model output.
 The model output is trained with the *.csv files sorted alphabetically.
 
 Escape key while focused on OpenCV video output window to end the process by default (key code 27).
