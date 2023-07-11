@@ -1,5 +1,9 @@
 # Hand posture control
 
+
+***WARNING : This README doesn't include the drone controls documentation.***
+
+
 ## Description
 This package contains all requirements to add new classes, 
 train those classes and use them as control with pynput in respectively 3 python scripts
