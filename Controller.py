@@ -38,11 +38,13 @@ def webcam_main():
 
     drone = Tello()
     print("Connecting ...")
+    time.sleep(1)
     drone.connect()
     print("Connected")
-    # time.sleep(5)
+    time.sleep(2)
     print("Takeoff !")
     drone.takeoff()
+    time.sleep(4)
 
     print(f"Battery level : {drone.get_battery()}")
 
@@ -69,4 +71,4 @@ def drone_cam_main():
 
 
 if __name__ == '__main__':
-    drone_cam_main()
+    webcam_main()
