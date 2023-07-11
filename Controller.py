@@ -44,7 +44,7 @@ def webcam_main():
     time.sleep(2)
     print("Takeoff !")
     drone.takeoff()
-    time.sleep(4)
+    time.sleep(3)
 
     print(f"Battery level : {drone.get_battery()}")
 
