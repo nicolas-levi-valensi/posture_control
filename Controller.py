@@ -5,7 +5,7 @@ from djitellopy import Tello
 
 # SETTINGS
 MODEL_PATH = "Assets/model_data/"  # TensorFlow Keras model path root
-MODEL_OUTPUT_LABELS = ["dummy", "down", "left", "dummy", "Enter", "dummy", "right", "dummy", "dummy", "dummy", "up"]
+MODEL_OUTPUT_LABELS = ["dummy", "down", "left", "dummy", "Enter", "dummy", "dummy", "right", "dummy", "dummy", "dummy", "up"]
 PREDICTION_DELAY = 0.2  # Delay between each press on [up, down, left, right] key
 USE_VERBOSE_ON_HVC = True  # Enables INFO output from HandVideoClassifier
 
