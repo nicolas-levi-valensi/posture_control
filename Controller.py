@@ -4,7 +4,7 @@ from pynput.keyboard import Controller, Key
 from nico_lib.hvc_minilib import HandVideoClassifier
 
 # SETTINGS
-MODEL_PATH = "Assets/model_data"  # TensorFlow Keras model path root
+MODEL_PATH = "Assets/model_data/model.h5"  # TensorFlow Keras model path root
 MODEL_OUTPUT_LABELS = ["dummy", "down", "left", "dummy", "Enter", "dummy", "right", "dummy", "dummy", "up"]
 KEY_PRESS_DELAY = 0.2  # Delay between each press on [up, down, left, right] key
 USE_VERBOSE_ON_HVC = True  # Enables INFO output from HandVideoClassifier
