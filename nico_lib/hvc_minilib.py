@@ -176,8 +176,9 @@ class HandVideoClassifier:
 
         self.__running.value = 0
 
-        self.__stream.release()
-        cv2.destroyAllWindows()
+        if self.__video_output:
+            self.__stream.release()
+            cv2.destroyAllWindows()
 
         if self.__verbose:
             print("INFO: Stream stopped")
