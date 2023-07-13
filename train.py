@@ -109,17 +109,19 @@ def main():
                     pred = model.predict(coords_list.reshape(1, 63), verbose=False)
                     for c in range(len(posture_list)):
                         cv2.rectangle(img=img_rgb,
-                                      pt1=(0, 50 + 50 * c),
-                                      pt2=(int(200 * pred[0, c]), 50 * c),
+                                      pt1=(0, img_rgb.shape[0]//len(posture_list) \
+                                           + img_rgb.shape[0]//len(posture_list) * c),
+                                      pt2=(int(200 * pred[0, c]), img_rgb.shape[0]//len(posture_list) * c),
                                       color=(int(255 * (1 - pred[0, c])), int(255 * pred[0, c]), 0),
                                       thickness=-1)
                         cv2.rectangle(img=img_rgb,
-                                      pt1=(0, 50 + 50 * c),
-                                      pt2=(int(200), 50 * c),
+                                      pt1=(0, img_rgb.shape[0]//len(posture_list) \
+                                           + img_rgb.shape[0]//len(posture_list) * c),
+                                      pt2=(int(200), img_rgb.shape[0]//len(posture_list) * c),
                                       color=(100, 100, 100),
                                       thickness=1)
                         cv2.putText(img_rgb, posture_list[c],
-                                    (10, 25 + 50 * c),
+                                    (10, 25 + img_rgb.shape[0]//len(posture_list) * c),
                                     cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (55, 0, 200), 1)
             else:
                 cv2.rectangle(img_rgb, (0, 0), (w, h), (255, 0, 0), 5)
