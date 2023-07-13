@@ -46,7 +46,7 @@ def main():
 
     data_path = "Assets/datasets_records"
     train_model = not args.no_train
-    model_path = "Assets/model_data/"
+    model_path = "Assets/model_data/model.h5"
     files_names = [class_file for class_file in os.listdir(data_path)]
 
     if train_model:
