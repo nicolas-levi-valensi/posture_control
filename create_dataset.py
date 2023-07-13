@@ -30,6 +30,24 @@ def ask_class_name(dataset_path):
     def on_close():
         exit(0)
 
+    def show_dataset(path):
+        files_names = [class_file for class_file in os.listdir(path)]
+        posture_list = [x[:-4] for x in files_names]
+        dataset_window = tk.Toplevel(app)
+        dataset_window.title("Recorded data")
+
+        for i in range(len(posture_list)):
+            class_name = tk.Label(dataset_window, text=f"{i} : {posture_list[i]}",
+                                  font='Helvetica 12',
+                                  anchor="w",
+                                  relief="solid",
+                                  borderwidth=2,
+                                  width=25,
+                                  height=1,
+                                  background=f"#{i%10}f{(2*i)%10}f{(3*i)%10}f",
+                                  foreground="#ffffff")
+            class_name.pack()
+
     app = tk.Tk("Class name")
 
     label = tk.Label(master=app, text="Class name to register :",
@@ -37,19 +55,25 @@ def ask_class_name(dataset_path):
     label.place(relx=0.5, rely=0.2, anchor="n")
 
     frame = tk.Frame(master=app, background="#2f73a5",
-                     width=300, height=100)
+                     width=300, height=200)
     entry = tk.Entry(master=frame,
                      width=30, font="Helvetica 16 bold", justify="center")
     entry.place(relx=0.5, rely=0.2, anchor="center")
-    button = tk.Button(master=frame,
-                       text="Begin", width=15,
-                       command=lambda: edit_path(dataset_path))
-    button.place(relx=0.5, rely=0.7, anchor="center")
+    ok_button = tk.Button(master=frame,
+                          text="Begin", width=15,
+                          command=lambda: edit_path(dataset_path))
+    ok_button.place(relx=0.5, rely=0.40, anchor="center")
+
+    dataset_button = tk.Button(master=frame,
+                               text="View dataset", width=30,
+                               command=lambda: show_dataset(dataset_path))
+    dataset_button.place(relx=0.5, rely=0.9, anchor="center")
+
     frame.place(relx=0.5, rely=0.9, anchor="s")
 
     app.protocol("WM_DELETE_WINDOW", on_close)
     app.title(string="Class name chooser")
-    app.geometry("400x200")
+    app.geometry("400x380")
     app.config(bg='#2f73a5')
 
     app.mainloop()
