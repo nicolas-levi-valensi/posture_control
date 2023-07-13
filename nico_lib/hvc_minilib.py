@@ -30,7 +30,12 @@ class HandVideoClassifier:
         """
         self.__process = None
         self.__stream = None
-        self.__prediction = Value("i", -1)
+        self.__prediction_left = Value("i", -1)
+        self.__prediction_right = Value("i", -1)
+        self.left_center_coords_x = Value("i", -1)
+        self.left_center_coords_y = Value("i", -1)
+        self.right_center_coords_x = Value("i", -1)
+        self.right_center_coords_y = Value("i", -1)
         self.__running = Value('i', 0)
         self.__video_output = video_output
         self.__verbose = verbose
@@ -61,7 +66,7 @@ class HandVideoClassifier:
     def _mainloop_subprocess(self, model_path, labels):
         # Hands detection objects
         mp_hands = mp.solutions.hands
-        hands = mp_hands.Hands(min_detection_confidence=0.9)
+        hands = mp_hands.Hands(min_detection_confidence=0.9, max_num_hands=2)
 
         # Model loading
         model = models.load_model(model_path)
@@ -86,27 +91,47 @@ class HandVideoClassifier:
             if not grabbed:
                 self.stop()
             else:
+                src = cv2.flip(src, 1)
                 rgb_src = cv2.cvtColor(src, cv2.COLOR_BGR2RGB)
 
                 # Detection
                 results = hands.process(rgb_src)
-                if results.multi_hand_landmarks and len(results.multi_hand_landmarks) == 1:
-                    coords_list = np.zeros((21, 3), dtype=np.float32)
-                    for handLms in results.multi_hand_landmarks:
+                if results.multi_hand_landmarks and len(results.multi_hand_landmarks) == 2:
+                    coords_list = np.zeros((2, 21, 3), dtype=np.float32)
+                    for handLms, hand_id in zip(results.multi_hand_landmarks, [0, 1]):
                         # Landmarks enumeration
                         for nb, lm in enumerate(handLms.landmark):
-                            coords_list[nb, :] = [lm.x, lm.y, lm.z]
+                            coords_list[hand_id, nb, :] = [lm.x, lm.y, lm.z]
 
-                    pred = model.predict(coords_list.reshape(1, 63), verbose=False)
-                    self.__prediction.value = np.argmax(pred)
+                    pred_left = model.predict(coords_list[0, :, :].reshape(1, 63), verbose=False)
+                    self.__prediction_left.value = np.argmax(pred_left)
+
+                    pred_right = model.predict(coords_list[1, :, :].reshape(1, 63), verbose=False)
+                    self.__prediction_right.value = np.argmax(pred_right)
+
+                    self.left_center_coords_x.value = int(results.multi_hand_landmarks[0].landmark[9].x \
+                                                          * rgb_src.shape[1])
+                    self.left_center_coords_y.value = int(results.multi_hand_landmarks[0].landmark[9].y \
+                                                          * rgb_src.shape[0])
+                    self.right_center_coords_x.value = int(results.multi_hand_landmarks[1].landmark[9].x \
+                                                           * rgb_src.shape[1])
+                    self.right_center_coords_y.value = int(results.multi_hand_landmarks[1].landmark[9].y \
+                                                           * rgb_src.shape[0])
                 else:
-                    self.__prediction.value = -1
+                    self.__prediction_left.value = -1
+                    self.__prediction_right.value = -1
 
                 if self.__video_output:
                     if self.labels:
-                        if self.__prediction.value != -1:
-                            cv2.putText(src, self.labels[self.__prediction.value],
-                                        org=(20, 20), fontFace=cv2.FONT_HERSHEY_COMPLEX_SMALL,
+                        if self.__prediction_left.value != -1:
+                            cv2.putText(src, self.labels[self.__prediction_left.value],
+                                        org=(self.left_center_coords_x.value, self.left_center_coords_y.value),
+                                        fontFace=cv2.FONT_HERSHEY_COMPLEX_SMALL,
+                                        fontScale=1, color=(255, 255, 255), thickness=1)
+                        if self.__prediction_right.value != -1:
+                            cv2.putText(src, self.labels[self.__prediction_right.value],
+                                        org=(self.right_center_coords_x.value, self.right_center_coords_y.value),
+                                        fontFace=cv2.FONT_HERSHEY_COMPLEX_SMALL,
                                         fontScale=1, color=(255, 255, 255), thickness=1)
                     cv2.imshow("Video Output", src)
                     if self.always_on_top:
@@ -114,13 +139,22 @@ class HandVideoClassifier:
                     if cv2.waitKey(1) & 0xFF == 27:
                         self.stop()
 
-    def get_prediction(self) -> int:
+    def get_prediction(self) -> tuple:
         """
-        Returns the argmax of the classifier output.
+        Returns the argmax of the classifier output for both hands
 
         :return: Classifier Output, -1 if no class was detected.
         """
-        return self.__prediction.value
+        return self.__prediction_left.value, self.__prediction_right.value
+
+    def get__hands_coords(self) -> list:
+        """
+        Returns the coordinates in the image for both hands
+
+        :return: Hands coords in frame.
+        """
+        return [[self.left_center_coords_x.value, self.left_center_coords_y.value],
+                [self.right_center_coords_x.value, self.right_center_coords_y.value]]
 
     def is_running(self) -> int:
         """
