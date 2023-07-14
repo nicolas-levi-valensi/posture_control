@@ -86,7 +86,7 @@ class HandVideoClassifier:
         self._set_running()
 
         # Main loop, stops when EOF, escape or user code asking detection shutdown.
-        while self.__running and self.__stream.isOpened():
+        while self.is_running() and self.__stream.isOpened():
             grabbed, src = self.__stream.read()
             if not grabbed:
                 self.stop()
